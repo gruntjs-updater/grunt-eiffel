@@ -43,7 +43,7 @@ module.exports = function(grunt) {
     }
 
     grunt.log.writeln('Launching ' + name + ' ' + args.join(' ') + '...');
-    var env = _.extend(options.env, process.env);
+    var env = _.extend(process.env, options.env);
     var ec = spawn(name, args, {
       env: env
     });
