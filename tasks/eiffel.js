@@ -28,6 +28,9 @@ module.exports = function(grunt) {
       } else {
         var args = ['-finalize'];
       }
+      if (options.target) {
+        args.push('-target', options.target);
+      }
       args.push('-config', options.ecf, '-c_compile');
     } else {
       var name = 'gec';
