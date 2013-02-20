@@ -8,25 +8,69 @@
 
 'use strict';
 
+var fs = require('fs');
 var path = require('path');
 var spawn = require('child_process').spawn;
 var _ = require('underscore');
 
+var execute = function(grunt, name, args, callback) {
+  process.env.EIFFEL_LIBRARY = path.join(process.cwd(), 'eiffel_library');
+  fs.readdir(process.env.EIFFEL_LIBRARY, function(err, dirs) {
+    _.each(dirs, function(dir) {
+      var file = path.join(process.env.EIFFEL_LIBRARY, dir, 'system.json');
+      if (grunt.file.isFile(file)) {
+        var system = require(file);
+        if (system.env) {
+          process.env[system.env] = path.join(process.env.EIFFEL_LIBRARY, dir);
+        }
+      }
+    });
+    grunt.log.writeln('Launching ' + name + ' ' + args.join(' ') + '...');
+    var command = spawn(name, args);
+    command.stdout.on('data', function (data) {
+      process.stdout.write(data);
+    });
+    command.stderr.on('data', function (data) {
+      process.stdout.write(data);
+    });
+    command.on('exit', callback);
+  });
+};
+
 module.exports = function(grunt) {
 
-  grunt.registerMultiTask('eiffel', 'Eiffel compilation', function() {
+  grunt.registerMultiTask('estudio', 'Launch EiffelStudio', function() {
+    var done = this.async();
+    var options = this.options({
+      ecf: path.basename(process.cwd()) + '.ecf'
+    });
+    var name = 'estudio';
+    var args = [];
+    if (options.target) {
+      args.push('-target', options.target);
+    }
+    args.push('-config', options.ecf);
+    execute(grunt, name, args, function(code) {
+      if (code === 0) {
+        grunt.log.ok();
+        done();
+      } else {
+        done(false);
+      }
+    });
+  });
+
+  grunt.registerMultiTask('compile', 'Eiffel compilation', function() {
     var done = this.async();
     var workbench = grunt.option('workbench') || false;
     var options = this.options({
-      ecf: path.basename(process.cwd()) + '.ecf',
-      env: {}
+      ecf: path.basename(process.cwd()) + '.ecf'
     });
     if (this.target === 'ise') {
       var name = 'ec';
-      if (workbench) {
-        var args = [];
-      } else {
-        var args = ['-finalize'];
+      var args = [];
+      if (!workbench) {
+        args.push(['-finalize']);
       }
       if (options.target) {
         args.push('-target', options.target);
@@ -42,21 +86,7 @@ module.exports = function(grunt) {
       args.push('--catcall=no', options.ecf);
     }
 
-    grunt.log.writeln('Launching ' + name + ' ' + args.join(' ') + '...');
-    var env = _.extend(process.env, options.env);
-    var ec = spawn(name, args, {
-      env: env
-    });
-
-    ec.stdout.on('data', function (data) {
-      process.stdout.write(data);
-    });
-
-    ec.stderr.on('data', function (data) {
-      process.stdout.write(data);
-    });
-
-    ec.on('exit', function (code) {
+    execute(grunt, name, args, function(code) {
       if (code === 0) {
         grunt.log.ok();
         done();
