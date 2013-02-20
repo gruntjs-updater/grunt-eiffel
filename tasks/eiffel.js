@@ -44,6 +44,7 @@ module.exports = function(grunt) {
     var options = this.options({
       ecf: path.basename(process.cwd()) + '.ecf'
     });
+    process.env['GOBO_EIFFEL'] = process.env['gobo_eiffel'] = 'ise';
     var name = 'estudio';
     var args = [];
     if (options.target) {
@@ -67,6 +68,7 @@ module.exports = function(grunt) {
       ecf: path.basename(process.cwd()) + '.ecf'
     });
     if (this.target === 'ise') {
+      process.env['GOBO_EIFFEL'] = process.env['gobo_eiffel'] = 'ise';
       var name = 'ec';
       var args = [];
       if (!workbench) {
@@ -77,6 +79,7 @@ module.exports = function(grunt) {
       }
       args.push('-config', options.ecf, '-c_compile');
     } else {
+      process.env['GOBO_EIFFEL'] = process.env['gobo_eiffel'] = 'ge';
       var name = 'gec';
       if (workbench) {
         var args = [];
