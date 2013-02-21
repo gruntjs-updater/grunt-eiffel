@@ -17,14 +17,14 @@ One the plugin has been installed, it may be enabled inside your Gruntfile with 
 grunt.loadNpmTasks('grunt-eiffel');
 ```
 
-## The "eiffel" task
+## The "compile" task
 
 ### Overview
-In your project's Gruntfile, add a section named `eiffel` to the data object passed into `grunt.initConfig()`.
+In your project's Gruntfile, add a section named `compile` to the data object passed into `grunt.initConfig()`.
 
 ```js
 grunt.initConfig({
-  eiffel: {
+  compile: {
     options: {
       // Task-specific options go here.
     },
@@ -37,49 +37,46 @@ grunt.initConfig({
 
 ### Options
 
-#### options.separator
+#### options.ecf
 Type: `String`
-Default value: `',  '`
+Default value: `basename of the current working directory + .ecf`
 
-A string value that is used to do something with whatever.
+ECF file name.
 
-#### options.punctuation
+#### options.target
 Type: `String`
-Default value: `'.'`
+Default value: `undefined`
 
-A string value that is used to do something else with whatever else.
+Target name.
 
 ### Usage Examples
 
 #### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
+In this example, the default options are used to compile an Eiffel project using EiffelStudio.
 
 ```js
 grunt.initConfig({
-  eiffel: {
-    options: {},
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-})
+  compile: {
+    ise: {}
+  }
+});
 ```
 
 #### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
+In this example, custom options are used to compile an Eiffel project using EiffelStudio.
+So if the `ecf` option has the content `project.ecf` and the `target` option has the content `fcgi`, the generated result in this case would be to compile the `fcgi` target using the ECF file `project.ecf`.
 
 ```js
 grunt.initConfig({
-  eiffel: {
-    options: {
-      separator: ': ',
-      punctuation: ' !!!',
-    },
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-})
+  compile: {
+    ise: {
+      options: {
+        ecf: 'project.ecf',
+        target: 'fcgi'
+      }
+    }
+  }
+});
 ```
 
 ## Contributing
