@@ -125,7 +125,7 @@ grunt.initConfig({
 
 #### Custom Options
 In this example, custom options are used to launch EiffelStudio.
-So if the `ecf` option has the content `project.ecf` and the `target` option has the content `nino`, the generated result in this case would be to launch EiffelStudio using `fcgi` as the target and `project.ecf` as the ECF file.
+So if the `ecf` option has the content `project.ecf` and the `target` option has the content `nino`, the generated result in this case would be to launch EiffelStudio using `nino` as the target and `project.ecf` as the ECF file.
 
 ```js
 grunt.initConfig({
