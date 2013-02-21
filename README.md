@@ -78,6 +78,67 @@ grunt.initConfig({
   }
 });
 ```
+## The "estudio" task
+
+### Overview
+In your project's Gruntfile, add a section named `estudio` to the data object passed into `grunt.initConfig()`.
+
+```js
+grunt.initConfig({
+  estudio: {
+    options: {
+      // Task-specific options go here.
+    },
+    your_target: {
+      // Target-specific file lists and/or options go here.
+    },
+  },
+})
+```
+
+### Options
+
+#### options.ecf
+Type: `String`  
+Default value: basename of the current working directory + .ecf
+
+ECF file name.
+
+#### options.target
+Type: `String`  
+Default value: `undefined`
+
+Target name.
+
+### Usage Examples
+
+#### Default Options
+In this example, the default options are used to lauch EiffelStudio.
+
+```js
+grunt.initConfig({
+  estudio: {
+    main: {}
+  }
+});
+```
+
+#### Custom Options
+In this example, custom options are used to launch EiffelStudio.
+So if the `ecf` option has the content `project.ecf` and the `target` option has the content `nino`, the generated result in this case would be to launch EiffelStudio using `fcgi` as the target and `project.ecf` as the ECF file.
+
+```js
+grunt.initConfig({
+  estudio: {
+    nino: {
+      options: {
+        ecf: 'project.ecf',
+        target: 'nino'
+      }
+    }
+  }
+});
+```
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
