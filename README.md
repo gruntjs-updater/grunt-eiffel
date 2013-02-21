@@ -38,13 +38,13 @@ grunt.initConfig({
 ### Options
 
 #### options.ecf
-Type: `String`
-Default value: `basename of the current working directory + .ecf`
+Type: `String`  
+Default value: basename of the current working directory + .ecf
 
 ECF file name.
 
 #### options.target
-Type: `String`
+Type: `String`  
 Default value: `undefined`
 
 Target name.
