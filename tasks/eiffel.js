@@ -27,9 +27,11 @@ var execute = function(grunt, name, args, callback) {
     });
     grunt.log.writeln('Launching ' + name + ' ' + args.join(' ') + '...');
     var command = spawn(name, args);
+    command.stdout.setEncoding('utf8');
     command.stdout.on('data', function (data) {
       process.stdout.write(data);
     });
+    command.stderr.setEncoding('utf8');
     command.stderr.on('data', function (data) {
       process.stdout.write(data);
     });
