@@ -1,7 +1,7 @@
 {
   "name": "grunt-eiffel",
   "description": "Eiffel Grunt plugin",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "homepage": "https://github.com/oligot/grunt-eiffel",
   "author": {
     "name": "Olivier Ligot",
@@ -28,7 +28,8 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "underscore": "*"
+    "underscore": "*",
+    "shelljs": "*"
   },
   "devDependencies": {
     "grunt-contrib-jshint": "~0.1.1",

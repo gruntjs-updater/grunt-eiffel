@@ -12,6 +12,7 @@ var fs = require('fs');
 var path = require('path');
 var spawn = require('child_process').spawn;
 var _ = require('underscore');
+var shell = require('shelljs');
 
 var execute = function(grunt, name, args, callback) {
   process.env.EIFFEL_LIBRARY = path.join(process.cwd(), 'eiffel_library');
@@ -40,6 +41,10 @@ var execute = function(grunt, name, args, callback) {
 };
 
 module.exports = function(grunt) {
+
+  grunt.registerTask('epm', 'Run the Eiffel Package Manager', function() {
+    shell.exec('epm sync');
+  });
 
   grunt.registerMultiTask('estudio', 'Launch EiffelStudio', function() {
     var done = this.async();
