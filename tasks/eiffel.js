@@ -46,7 +46,7 @@ module.exports = function(grunt) {
     shell.exec('epm sync');
   });
 
-  grunt.registerMultiTask('estudio', 'Launch EiffelStudio', function() {
+  grunt.registerTask('estudio', 'Launch EiffelStudio', function(target) {
     var done = this.async();
     var options = this.options({
       ecf: path.basename(process.cwd()) + '.ecf'
@@ -54,8 +54,8 @@ module.exports = function(grunt) {
     process.env['GOBO_EIFFEL'] = process.env['gobo_eiffel'] = 'ise';
     var name = 'estudio';
     var args = [];
-    if (options.target) {
-      args.push('-target', options.target);
+    if (target) {
+      args.push('-target', target);
     }
     args.push('-config', options.ecf);
     execute(grunt, name, args, function(code) {
@@ -70,15 +70,16 @@ module.exports = function(grunt) {
 
   grunt.registerMultiTask('compile', 'Eiffel compilation', function() {
     var done = this.async();
-    var workbench = grunt.option('workbench') || false;
     var options = this.options({
-      ecf: path.basename(process.cwd()) + '.ecf'
+      compiler: 'ise',
+      ecf: path.basename(process.cwd()) + '.ecf',
+      workbench: false
     });
-    if (this.target === 'ise') {
+    if (options.compiler === 'ise') {
       process.env['GOBO_EIFFEL'] = process.env['gobo_eiffel'] = 'ise';
       var name = 'ec';
       var args = [];
-      if (!workbench) {
+      if (!options.workbench) {
         args.push(['-finalize']);
       }
       if (options.target) {
@@ -88,7 +89,7 @@ module.exports = function(grunt) {
     } else {
       process.env['GOBO_EIFFEL'] = process.env['gobo_eiffel'] = 'ge';
       var name = 'gec';
-      if (workbench) {
+      if (options.workbench) {
         var args = [];
       } else {
         var args = ['--finalize'];
