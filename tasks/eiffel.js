@@ -86,6 +86,9 @@ module.exports = function(grunt) {
         args.push('-target', options.target);
       }
       args.push('-config', options.ecf, '-c_compile');
+      if (options.verbose) {
+        args.push('-verbose');
+      }
     } else {
       process.env['GOBO_EIFFEL'] = process.env['gobo_eiffel'] = 'ge';
       var name = 'gec';
@@ -95,6 +98,9 @@ module.exports = function(grunt) {
         var args = ['--finalize'];
       }
       args.push('--catcall=no', options.ecf);
+      if (options.verbose) {
+        args.push('--verbose');
+      }
     }
 
     execute(grunt, name, args, function(code) {
