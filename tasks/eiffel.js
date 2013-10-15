@@ -14,8 +14,8 @@ var spawn = require('child_process').spawn;
 var _ = require('underscore');
 var shell = require('shelljs');
 
-var execute = function(grunt, name, args, callback) {
-  process.env.EIFFEL_LIBRARY = path.join(process.cwd(), 'eiffel_library');
+var execute = function(grunt, options, callback) {
+  process.env.EIFFEL_LIBRARY = path.join(options.cwd || process.cwd(), 'eiffel_library');
   fs.readdir(process.env.EIFFEL_LIBRARY, function(err, dirs) {
     _.each(dirs, function(dir) {
       var file = path.join(process.env.EIFFEL_LIBRARY, dir, 'system.json');
@@ -26,8 +26,8 @@ var execute = function(grunt, name, args, callback) {
         }
       }
     });
-    grunt.log.writeln('Launching ' + name + ' ' + args.join(' ') + '...');
-    var command = spawn(name, args);
+    grunt.log.writeln('Launching ' + options.name + ' ' + options.args.join(' ') + '...');
+    var command = spawn(options.name, options.args);
     command.stdout.setEncoding('utf8');
     command.stdout.on('data', function (data) {
       process.stdout.write(data);
@@ -58,7 +58,7 @@ module.exports = function(grunt) {
       args.push('-target', target);
     }
     args.push('-config', options.ecf);
-    execute(grunt, name, args, function(code) {
+    execute(grunt, { name: name, args: args }, function(code) {
       if (code === 0) {
         grunt.log.ok();
         done();
@@ -103,7 +103,23 @@ module.exports = function(grunt) {
       }
     }
 
-    execute(grunt, name, args, function(code) {
+    execute(grunt, { name: name, args: args }, function(code) {
+      if (code === 0) {
+        grunt.log.ok();
+        done();
+      } else {
+        done(false);
+      }
+    });
+  });
+
+  grunt.registerMultiTask('getest', 'Launch Gobo Eiffel Test', function() {
+    var done = this.async();
+    var options = this.options();
+    var cwd = process.cwd();
+    process.chdir(options.dir);
+    execute(grunt, { name: 'getest', args: [], cwd: cwd }, function(code) {
+      process.chdir(cwd);
       if (code === 0) {
         grunt.log.ok();
         done();

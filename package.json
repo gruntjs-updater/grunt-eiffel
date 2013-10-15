@@ -1,7 +1,7 @@
 {
   "name": "grunt-eiffel",
   "description": "Eiffel Grunt plugin",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "homepage": "https://github.com/oligot/grunt-eiffel",
   "author": {
     "name": "Olivier Ligot",
